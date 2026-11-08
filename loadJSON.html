@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 ways to load JSON</title>
+
+    <script>
+
+        //
+        // arguments to send as params, in all the ways
+        //
+        const myobject = {
+            SayMyName: true
+        };
+
+        let myparams = new URLSearchParams(myobject);
+
+        /* or        const myparams = new URLSearchParams({
+                    SayMyName: true
+                }); */
+
+
+        //
+        // load data.json with XMLHttpRequest
+        //
+
+        /*         let xhr = new XMLHttpRequest();
+        
+                xhr.onload = function (){
+                    myjson = xhr.responseText;
+                    miobj = JSON.parse(myjson);
+                    document.getElementById("myname").innerHTML = miobj.Name;
+                }
+                xhr.open('GET', 'data.json?'+myparams, true);
+                xhr.send();  */
+
+
+
+        //
+        // load data.json with fetch
+        //
+
+/*         fetch('data.json?'+myparams)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('myname').textContent = data.Name + " " + data.Surname;
+            }) */
+
+
+        //
+        // load data.json with async/await
+        //
+        async function loadData() {
+            const response = await fetch(`data.json?${myparams}`); // let's use template literals! (very trendy!)
+            const data = await response.json();
+            document.getElementById('myname').textContent = `${data.Name} ${data.Surname}`; 
+        }
+
+        loadData();
+
+    </script>
+
+
+</head>
+
+<body>
+
+    <h1>3 ways to load JSON</h1>
+
+    <div>My name is <span id="myname">Loading...</span></div>
+
+</body>
+
+</html>
